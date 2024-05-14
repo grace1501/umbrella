@@ -15,4 +15,8 @@ user_lat = parsed_map["results"][0].fetch("geometry").fetch("location").fetch("l
 user_lng = parsed_map.fetch("results")[0].fetch("geometry").fetch("location").fetch("lng")
 
 pirate_weather_key = ENV.fetch("PIRATE_WEATHER_KEY")
+weather_url = "https://api.pirateweather.net/forecast/#{pirate_weather_key}/#{user_lat},#{user_lng}"
+weather_res = HTTP.get(weather_url)
+weather_json = JSON.parse(weather_res)
+
 
