@@ -19,4 +19,18 @@ weather_url = "https://api.pirateweather.net/forecast/#{pirate_weather_key}/#{us
 weather_res = HTTP.get(weather_url)
 weather_json = JSON.parse(weather_res)
 
+weather_url_si = "#{weather_url}?units=si"
+weather_res_si = HTTP.get(weather_url_si)
+weather_json_si = JSON.parse(weather_res_si)
 
+current_temp = weather_json.fetch("currently").fetch("temperature")
+current_temp_si = weather_json_si.fetch("currently").fetch("temperature")
+
+next_hour_weather = weather_json.fetch("hourly").fetch("summary")
+
+puts "You are in #{location}. 
+The current temperature is #{current_temp} F, #{current_temp_si} C. 
+The weather for the next hour is #{next_hour_weather}"
+
+hourly_weather_array = weather_json.fetch("hourly").fetch("data")
+pp hourly_weather_array[0...12].length 
