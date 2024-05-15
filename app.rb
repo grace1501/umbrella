@@ -4,8 +4,8 @@ require "json"
 gmap_key = ENV.fetch("GMAPS_KEY")
 
 puts "Where are you?"
-# location = gets.chomp
-location = "Chicago"
+location = gets.chomp
+# location = "Columbus"
 
 location_address = location.gsub(" ", "%20")
 map_res = HTTP.get("https://maps.googleapis.com/maps/api/geocode/json?address=#{location_address}&key=#{gmap_key}")
@@ -33,4 +33,19 @@ The current temperature is #{current_temp} F, #{current_temp_si} C.
 The weather for the next hour is #{next_hour_weather}"
 
 hourly_weather_array = weather_json.fetch("hourly").fetch("data")
-pp hourly_weather_array[0...12].length 
+will_rain = false
+
+hourly_weather_array[0...12].each_with_index {|hour, index|
+  chance_of_rain = (hour.fetch("precipProbability")*100).to_i
+
+  if chance_of_rain > 10
+    will_rain = true
+    puts "In #{index} hour, there is #{chance_of_rain}% chance of rain."
+  end  
+}
+
+if will_rain == true 
+  puts "You might want to take an umbrella!"
+else
+    puts "You don't need an umbrella."
+end
